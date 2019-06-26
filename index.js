@@ -18,9 +18,30 @@ const readCSVExport = (filepath, cb) => {
     });
 }
 
+const listMostCommonOccurrences = (objectWithMatches, threshold) => {
+  console.log("Compiling the most common words...")
+  let newObject = {}
+  for (let word of objectWithMatches) {
+    if (objectWithMatches[word] >= threshold) {
+      newObject[word] = objectWithMatches[word];
+    }
+  }
+  return newObject;
+}
+
 readCSVExport('./emails/all-emails.csv', async (emails) => {
   let identifiedWords = {}; // Start with an empty object, where each word identified becomes its own key
+  let totalCount = emails.length;
+  let currentCount = 1;
+  let lastProgress = 0;
+  console.log("Now checking for word occurrences...")
   emails.forEach(email => {
+    let newProgress = Math.floor((currentCount/totalCount)*100);
+    if (newProgress !== lastProgress) {
+      console.log(`${newProgress} % Complete!`)
+    }
+    lastProgress = newProgress;
+    currentCount++;
     if (email) {
       let firstPartEmail = email.split('@')[0]
       for (let word in commonEnglishWords) {
@@ -38,5 +59,5 @@ readCSVExport('./emails/all-emails.csv', async (emails) => {
       }
     }
   })
-  console.log(identifiedWords)
+  console.log(listMostCommonOccurrences(identifiedWords, 10))
 });
