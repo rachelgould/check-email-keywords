@@ -1,8 +1,9 @@
 const csv = require('csv-parser');
 const fs = require('fs');
-const wordlist = require('wordlist-english'); 
+const wordlist = require('wordlist-english');
+let commonEnglishWords = wordlist['english/10'];
 
-const readOPExport = (filepath, cb) => {
+const readCSVExport = (filepath, cb) => {
   let emails = []
   fs.createReadStream(filepath) 
     .pipe(csv())
@@ -16,6 +17,15 @@ const readOPExport = (filepath, cb) => {
     });
 }
 
-readOPExport('./emails/all-emails.csv', async (emails) => {
-  console.log(emails)
+readCSVExport('./emails/all-emails.csv', async (emails) => {
+  let identifiedWords = {}; // Start with an empty object, where each word identified becomes its own key
+  let firstPartEmail = [];
+  emails.forEach(email => {
+    if (email) {
+      firstPartEmail.push(email.split('@')[0])
+    }
+  })
+  firstPartEmail.forEach(email => {
+
+  })
 });
