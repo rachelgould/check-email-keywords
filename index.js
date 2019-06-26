@@ -21,7 +21,7 @@ const readCSVExport = (filepath, cb) => {
 const listMostCommonOccurrences = (objectWithMatches, threshold) => {
   console.log("Compiling the most common words...")
   let newObject = {}
-  for (let word of objectWithMatches) {
+  for (let word in objectWithMatches) {
     if (objectWithMatches[word] >= threshold) {
       newObject[word] = objectWithMatches[word];
     }
@@ -59,5 +59,5 @@ readCSVExport('./emails/all-emails.csv', async (emails) => {
       }
     }
   })
-  console.log(listMostCommonOccurrences(identifiedWords, 10))
+  console.log(listMostCommonOccurrences(identifiedWords, 15))
 });
